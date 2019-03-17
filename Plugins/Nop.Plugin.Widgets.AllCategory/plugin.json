@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "All Category",
+  "SystemName": "Widgets.AllCategory",
+  "Version": "1.30",
+  "SupportedVersions": [ "4.10" ],
+  "Author": "Bidzina Goginashvili",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Widgets.AllCategory.dll",
+  "Description": "This plugin allows you to have all categories page"
+}

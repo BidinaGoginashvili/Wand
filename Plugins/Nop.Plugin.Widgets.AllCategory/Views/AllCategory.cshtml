@@ -1,0 +1,57 @@
+﻿@using Microsoft.IdentityModel.Tokens
+@using Nop.Core.Domain.Catalog;
+@using Nop.Core.Domain.Media
+@using Nop.Core.Domain.Seo
+@using OfficeOpenXml.FormulaParsing.Excel.Functions.Math
+@model Nop.Plugin.Widgets.AllCategory.Models.ViewModel
+@{
+    Layout = "_ColumnsOne";
+    var _pictureService = Nop.Core.Infrastructure.EngineContext.Current.Resolve<Nop.Services.Media.IPictureService>();
+    string pictureUrl = "";
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<style>
+    .categoryImg {
+        width: 100%;
+        height: 100px;
+    }
+
+    .categoryName {
+        text-align: center;
+    }
+
+    .subName li a {
+        text-align: center;
+        display: block;
+    }
+</style>
+
+
+<div class="container">
+    <div class="row">
+        @foreach (var category in Model.Categories.Where(i => i.ParentCategoryId == 0))
+        {
+            <div class="col-md-3">
+                @foreach (var picture in Model.Pictures.Where(i => i.Id == category.PictureId))
+                {
+                    pictureUrl = _pictureService.GetPictureUrl(category.PictureId);
+                    <img src="@pictureUrl" class="categoryImg" />
+                }
+                <p class="categoryName">@category.Name</p>
+                @foreach (var subCategory in Model.Categories.Where(i => i.ParentCategoryId == category.Id))
+                {
+                    @foreach (var subCategUrlRecord in Model.UrlRecords.Where(i => i.EntityId == subCategory.Id && i.EntityName == "Category"))
+                    {
+                        <ul class="subName">
+                            <li><a href="@subCategUrlRecord.Slug">@subCategory.Name</a></li>
+                        </ul>
+                    }
+                }
+            </div>
+        }
+    </div>
+
+</div>
